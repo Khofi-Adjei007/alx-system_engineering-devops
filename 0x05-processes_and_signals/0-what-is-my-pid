@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-
-# Script: display_pid.sh
-# Description: This script displays its own Process ID (PID).
+#Description: This script deiplays its own Process ID (PID).
+# Script: 0-what-is-my-pid.sh
 
 # Display the PID of the current script
 echo "$$."
