@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script displays
+
+
+trap 'echo "To infinity and beyond"' 2
+while true; do
+    echo "I am invincible!!!"
+    sleep 2
+done
