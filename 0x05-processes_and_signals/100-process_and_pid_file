@@ -1,0 +1,28 @@
+#!/bin/bash
+#Description here
+
+# Function to handle the SIGTERM and SIGQUIT signals
+terminate() {
+    echo "I hate the kill command"
+    rm -f /var/run/myscript.pid
+    exit 0
+}
+
+# Function to handle the SIGINT signal
+interrupt() {
+    echo "Y U no love me?!"
+}
+
+# Trap SIGTERM, SIGQUIT, and SIGINT signals
+trap 'terminate' SIGTERM SIGQUIT
+trap 'interrupt' SIGINT
+
+# Get the current process ID
+pid=$$
+echo "$pid" > /var/run/myscript.pid
+
+# Display messages
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done
