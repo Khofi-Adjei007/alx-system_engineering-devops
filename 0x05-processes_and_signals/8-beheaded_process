@@ -1,0 +1,4 @@
+#!/bin/bash
+# comment here
+
+pkill -f "7-highlander"
