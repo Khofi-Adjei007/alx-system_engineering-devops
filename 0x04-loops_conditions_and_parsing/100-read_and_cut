@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# This script displays specific information about users from the /etc/passwd file.
+
+# Read the /etc/passwd file line by line using a while loop
+while IFS=':' read -r username _ userid _ _ homedir _; do
+    # Extracted fields:
+    # username: Field 1 (username)
+    # userid: Field 3 (user ID)
+    # homedir: Field 6 (home directory)
+
+    # Display the extracted information
+    echo "Username: $username"
+    echo "User ID: $userid"
+    echo "Home Directory: $homedir"
+done < /etc/passwd
