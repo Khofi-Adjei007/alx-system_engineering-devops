@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script listens on port 98 on localhost
+
+# Use netcat to listen on port 98 and echo a message
+while true; do
+    echo "Connected to port 98"
+    nc -l -p 98 < /dev/null
+done
