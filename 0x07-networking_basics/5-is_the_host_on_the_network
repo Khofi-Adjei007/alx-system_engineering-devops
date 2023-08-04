@@ -1,4 +1,6 @@
 #!/bin/bash
+# A bash script a Bash script that pings an IP address passed as an argument.
+
 
 # Check if an IP address is provided as an argument
 if [ $# -ne 1 ]; then
