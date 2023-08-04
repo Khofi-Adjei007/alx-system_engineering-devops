@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# This script displays listening ports that only show listening sockets
+# and also shows the PID and name of the program to which each socket belongs.
+
+# Get the list of listening sockets using ss command
+listening_sockets=$(ss -tuln | grep 'LISTEN')
+
+# Loop through each listening socket
+while read -r line; do
+    pid=$(echo "$line" | awk '{print $7}')
+    prog=$(readlink -f "/proc/$pid/exe")
+    
+    # Display the PID, program name, and port
+    echo "$(echo "$pid" | cut -d' ' -f1)    $(basename "$prog")   $(echo "$pid" | cut -d':' -f2)"
+done <<< "$listening_sockets"
