@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# This script configures an Ubuntu server as per the given requirements.
+
+# Update /etc/hosts to map localhost to 127.0.0.2
+echo "127.0.0.2 localhost" | sudo tee -a /etc/hosts
+
+# Update DNS resolver to use 8.8.8.8 for facebook.com
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
+echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
+
+# Print success message
+echo "Configuration completed."
