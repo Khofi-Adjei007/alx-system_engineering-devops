@@ -1,12 +1,10 @@
-#!/bin/bash
-#Display header
+#!/usr/bin/env bash
 
-echo "PID    Program         Port"
+# This script displays the listening ports on the system.
+# It also shows the Process ID (PID) and the name of the program associated with each socket.
 
-# Iterate through each listening socket using ss command
-ss -tln | awk '/LISTEN/ {split($6, a, ":"); printf "%-7s%-16s%s\n", $7, $NF, a[length(a)]}'
+# Explanation of functionality:
+# - The script identifies and lists the ports that are in a listening state.
+# - It also provides information about the associated process using the PID and program name.
 
-# Explanation:
-# - The `ss -tln` command lists listening TCP sockets.
-# - The `awk` command processes the output and extracts the PID, program name, and port.
-# - The `split` function is used to extract the port number from the socket address.
+netstat -l --program
