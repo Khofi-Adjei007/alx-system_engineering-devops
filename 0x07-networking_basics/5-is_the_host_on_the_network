@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # This script performs a ping operation to a specified IP address provided as an argument.
 # It accepts a string containing the IP address as the argument.
 # If no argument is provided, it displays a usage message: "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}".
