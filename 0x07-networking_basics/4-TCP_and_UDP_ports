@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # This script displays the listening ports on the system.
 # It also shows the Process ID (PID) and the name of the program associated with each socket.
 
