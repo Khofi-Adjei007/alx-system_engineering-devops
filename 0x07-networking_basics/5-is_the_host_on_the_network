@@ -1,15 +1,17 @@
-#!/bin/bash
-# A bash script a Bash script that pings an IP address passed as an argument.
+#!/usr/bin/env bash
+# This script performs a ping operation to a specified IP address provided as an argument.
+# It accepts a string containing the IP address as the argument.
+# If no argument is provided, it displays a usage message: "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}".
+# The script then sends five ping requests to the specified IP address.
 
+# Explanation of functionality:
+# - The script utilizes the ping command to check the reachability of an IP address.
+# - If no IP address is provided as an argument, it guides the user on how to use the script.
+# - The script performs the ping operation five times to determine if the host is on the network.
 
-# Check if an IP address is provided as an argument
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 {IP_ADDRESS}"
-    exit 1
+if [ $# -eq 0 ]
+then
+	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
+else
+	ping -c 5 "$1"
 fi
-
-# Extract the IP address from the argument
-ip_address="$1"
-
-# Ping the IP address 5 times
-ping -c 5 "$ip_address"
