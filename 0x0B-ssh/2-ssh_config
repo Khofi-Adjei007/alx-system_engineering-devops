@@ -1,0 +1,7 @@
+# SSH Configuration File
+
+# Allow password authentication for all hosts.
+PasswordAuthentication no
+
+# Use the 'school' identity file located at ~/.ssh/school for authentication.
+IdentityFile ~/.ssh/school
