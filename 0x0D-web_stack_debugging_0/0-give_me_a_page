@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# This script changes configuration files for Nginx.
+# It replaces occurrences of port 8080 with port 80 in the Nginx configuration.
+# Then, it starts the Nginx service.
+# Finally, it sends a SIGKILL signal to the Nginx process to ensure it's terminated.
+
+# Use 'sed' to replace occurrences of port 8080 with port 80 in the Nginx configuration file
+sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+
+# Start the Nginx service
+service nginx start
+
+# Terminate the Nginx process by sending a SIGKILL signal
+kill -SIGKILL "$(cat /run/nginx.pid)"
