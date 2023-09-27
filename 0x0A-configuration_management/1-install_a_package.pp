@@ -1,4 +1,7 @@
-package { 'flask':
-  ensure   => '2.1.0',
-  provider => 'pip3',
+file { '/tmp/school':
+  ensure => 'file',
+  mode   => '0744',
+  owner  => 'www-data',
+  group  => 'www-data',
+  content => 'I love Puppet',
 }
