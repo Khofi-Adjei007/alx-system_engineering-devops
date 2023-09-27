@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# This script configures an Nginx server to implement a redirection from "/redirect_me" to another web page.
+# The redirection is configured as a "301 Moved Permanently" status code.
+
+# Update the package list
+apt-get update
+
+# Install Nginx
+apt-get install -y nginx
+
+# Create the directory for the HTML content
+mkdir -p /etc/nginx/html
+
+# Create an HTML file with "Hello World" content (not directly related to redirection)
+touch /etc/nginx/html/index.html
+echo "Hello World" > /etc/nginx/html/index.html
+
+# Configure Nginx with a server block that handles the redirection
+printf %s "server {
+    listen 80;
+    listen [::]:80 default_server;
+    root   /etc/nginx/html;
+    index  index.html index.htm;
+    location /redirect_me {
+        return 301 http://google.com/;
+    }
+}" > /etc/nginx/sites-available/default
+
+# Restart Nginx to apply the configuration
+service nginx restart
