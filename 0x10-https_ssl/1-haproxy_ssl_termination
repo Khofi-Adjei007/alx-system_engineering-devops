@@ -1,39 +1,62 @@
-# /etc/haproxy/haproxy.cfg
-
+# Global section
 global
-    log /dev/log    local0
-    log /dev/log    local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
+    log /dev/log local0            # Set logging to local0
+    log /dev/log local1 notice     # Log important notices to local1
+    chroot /var/lib/haproxy        # Chroot to enhance security
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners   # Enable HAProxy statistics
+    stats timeout 30s              # Set a timeout for statistics
+    user haproxy                   # Run as user 'haproxy'
+    group haproxy                  # Run as group 'haproxy'
+    daemon                         # Run HAProxy as a daemon
 
+    # Default SSL material locations
+    ca-base /etc/ssl/certs         # Define the directory for SSL certificate authorities
+    crt-base /etc/ssl/private      # Define the directory for SSL private keys
+
+    # SSL/TLS configuration based on Mozilla recommendations
+    # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
+    ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES>
+    ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+    ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+
+# Defaults section
 defaults
-    log global
-    mode    http
-    option  httplog
-    option  dontlognull
-    timeout connect 5000
-    timeout client  50000
-    timeout server  50000
+    log global                    # Use global logging settings
+    mode http                     # Set the mode to HTTP
+    option httplog                # Enable HTTP request and response logging
+    option dontlognull            # Don't log null connections
+    timeout connect 5000          # Set timeout for connecting to a server
+    timeout client 50000          # Set client timeout
+    timeout server 50000          # Set server timeout
 
-frontend www-frontend
-    bind *:443 ssl crt /etc/letsencrypt/live/www.yourdomain.com/fullchain.pem
-    reqadd X-Forwarded-Proto:\ https
-    acl is_holberton path /
-    use_backend www-backend if is_holberton
+    # Error pages for various HTTP status codes
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
 
+# Frontend sections
+frontend www-http
+    bind 0.0.0.0:80               # Listen on all available IP addresses on port 80
+    http-request set-header X-Forwarded-Proto http  # Set the X-Forwarded-Proto header to 'http'
+    default_backend www-backend   # Use the 'www-backend' as the default backend
+
+frontend www-https
+    bind 0.0.0.0:443 ssl crt /etc/haproxy/certs/www.thepadj.tech.pem  # Listen on port 443 with SSL
+    http-request set-header X-Forwarded-Proto https  # Set the X-Forwarded-Proto header to 'https'
+    acl letsencrypt-acl path_beg /.well-known/acme-challenge/  # Check for Let's Encrypt ACME challenge requests
+    use_backend letsencrypt-backend if letsencrypt-acl  # Use 'letsencrypt-backend' for ACME challenges
+    default_backend www-backend    # Use the 'www-backend' for other HTTPS requests
+
+# Backend sections
 backend www-backend
-    mode http
-    server webserver1 web-01-ip:80 check
-    server webserver2 web-02-ip:80 check
+    balance roundrobin           # Use round-robin load balancing algorithm
+    redirect scheme https if !{ ssl_fc }  # Redirect to HTTPS if not already using SSL
+    server 1733-web-01 3.235.21.36:80 check  # Define the backend servers with IP addresses and port
+    server 1733-web-02 34.139.50.126:80 check
 
-listen stats
-    bind *:8080
-    stats enable
-    stats uri /
-    stats realm HAProxy\ Statistics
-    stats auth admin:yourpassword  # Change 'yourpassword' to a strong password
-
+backend letsencrypt-backend
+    server letsencrypt 127.0.0.1:54321  # Define the server for handling Let's Encrypt ACME challenges
