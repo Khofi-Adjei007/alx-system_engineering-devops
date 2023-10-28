@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Slayng the Webserver, but i dnt know how, maybe uptown energy
+
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+service nginx restart
+pkill -f "nginx"
