@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script provides information about the school file.
+# Script to provide information
 
 file_path="school.txt"
 
