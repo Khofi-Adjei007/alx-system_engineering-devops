@@ -1,11 +1,5 @@
-# Allow incoming traffic on port 80 for TCP (HTTP)
-ufw allow 80/tcp
-
-# Allow incoming traffic on port 443 for TCP (HTTPS)
-ufw allow 443/tcp
-
-# Allow incoming traffic on port 22 for TCP (SSH)
-ufw allow 22/tcp
-
-# Enable the Uncomplicated Firewall (UFW) to start using the configured rules
-ufw enable
+sudo ufw default deny incoming
+sudo ufw allow ssh
+sudo ufw allow https
+sudo ufw allow http
+sudo ufw enable
