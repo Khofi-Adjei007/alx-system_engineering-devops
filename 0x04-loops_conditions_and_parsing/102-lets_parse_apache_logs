@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Bash script to parse Apache log files in list format.
+
+# Set the input log file to be parsed
+myfile="apache-access.log"
+
+# Use 'awk' to extract the first and ninth fields from the log lines,
+# which typically represent the IP address and HTTP status code.
+awk -F' ' '{ print $1, $9}' $myfile
