@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script displays messages based on different loop iterations.
+# Script tp display iteration messages
 
 count=1
 while [ "$count" -le 10 ]; do
