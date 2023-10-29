@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-# Bash script that creates a story based on the contents of the `/etc/passwd` file.
+#!/bin/bash
 
 # Set the input file to be used, in this case, the `/etc/passwd` file
 myfile="/etc/passwd"
@@ -25,6 +24,6 @@ do
     f6="$(echo "$line" | cut -d":" -f2)"
     f7="$(echo "$line" | cut -d":" -f5)"
     
-    # Create a story using the extracted fields
+    # Create a story using the extracted fields, including a comma after "lives in"
     echo "The user ${f1} is part of the ${f2} gang, lives in ${f3}, and rides ${f4}. ${f5}'s place is protected by the passcode ${f6}, more info about the user here: ${f7}"
 done < "$myfile"
