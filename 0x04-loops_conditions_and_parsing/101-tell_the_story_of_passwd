@@ -1,31 +1,17 @@
-#!/usr/bin/env bash
-# Bash script that creates a whimsical story based on the contents of the `/etc/passwd` file.
+#!/bin/bash
 
 # Set the input file to be used, in this case, the `/etc/passwd` file
-myfile="/etc/passwd"
+input_file="/etc/passwd"
 
-# Initialize variables to store fields extracted from each line of the file
-f1=""
-f2=""
-f3=""
-f4=""
-f5=""
-f6=""
-f7=""
+# Use the IFS (Internal Field Separator) to split lines into fields by the ':' character
+IFS=":"
 
-# Loop through each line of the `/etc/passwd` file
-while IFS= read -r line
+# Read the input file line by line and extract fields
+while read -r username x user_id group_id user_info home_directory shell
 do
-    # Extract specific fields from the line using 'cut'
-    f1="$(echo "$line" | cut -d":" -f1)"
-    f2="$(echo "$line" | cut -d":" -f4)"
-    f3="$(echo "$line" | cut -d":" -f6)"
-    f4="$(echo "$line" | cut -d":" -f7)"
-    f5="$(echo "$line" | cut -d":" -f3)"
-    f6="$(echo "$line" | cut -d":" -f2)"
-    f7="$(echo "$line" | cut -d":" -f5)"
+	    # Display the user information in the specified format
+	        echo "The user $username is part of the $group_id gang, lives in $home_directory, and rides $shell. $user_id's place is protected by the passcode x, more info about the user here: $user_info"
+	done < "$input_file"
 
-    # Create a whimsical story based on the extracted fields
-    echo "The user ${f1} is part of the ${f2} gang, lives in ${f3}, and rides ${f4}. ${f5}'s place is protected by the passcode ${f6}, more info about the user here: ${f7}"
-done < "$myfile"
-
+	# Reset IFS to its default value
+	IFS=$' \t\n'
