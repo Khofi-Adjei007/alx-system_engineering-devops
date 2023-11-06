@@ -1,17 +1,16 @@
-# Installing Nginx & HTTP response 
-exec { '/usr/bin/env apt-get -y update' : }
--> package { 'nginx':
-  ensure => installed,
+# Use Puppet to automate the task of creating a custom HTTP header response
+
+exec {'update':
+  command => '/usr/bin/apt-get update',
 }
--> file { '/var/www/html/index.html' :
-  content => 'Holberton School!',
+-> package {'nginx':
+  ensure => 'present',
 }
--> file_line { 'add header' :
-  ensure => present,
-  path   => '/etc/nginx/sites-available/default',
-  line   => "\tadd_header X-Served-By ${hostname};",
-  after  => 'server_name _;',
+-> file_line { 'http_header':
+  path  => '/etc/nginx/nginx.conf',
+  match => 'http {',
+  line  => "http {\n\tadd_header X-Served-By \"${hostname}\";",
 }
--> service { 'nginx':
-  ensure => running,
+-> exec {'run':
+  command => '/usr/sbin/service nginx restart',
 }
